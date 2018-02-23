@@ -5,3 +5,4 @@ end
 
 require "unit_conversion/convert"
 require "unit_conversion/conversion"
+require "unit_conversion/expression"
