@@ -12,6 +12,18 @@ module UnitConversion
       end
     end
 
+    def operand_index
+      expression_elements = expression.split(/[\/*]/)
+      case(expression_elements.length)
+      when 1 #no operands
+        nil
+      when 2 # one operand
+        expression_elements[0].length
+      else
+        raise ArgumentError, "must provide an expression with zero or one operands"
+      end
+    end
+
     private
 
     attr_reader :expression
