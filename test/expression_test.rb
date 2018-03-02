@@ -35,4 +35,32 @@ class ExpressionTest < Minitest::Test
     expression = UnitConversion::Expression.new("day/hour/minute")
     assert_raises(ArgumentError) { expression.operand_index }
   end
+
+  def test_evaluate_minute
+    assert_equal(
+      UnitConversion::Conversion.new(unit_name: 's', multiplication_factor: 60),
+      UnitConversion::Expression.new('minute').evaluate
+    )
+  end
+
+  def test_evaluate_minute_with_parens
+    assert_equal(
+      UnitConversion::Conversion.new(unit_name: 's', multiplication_factor: 60),
+      UnitConversion::Expression.new('(minute)').evaluate
+    )
+  end
+
+  def test_evaluate_degrees_per_minute
+    assert_equal(
+      UnitConversion::Conversion.new(unit_name: 'rad/s', multiplication_factor: 0.00029088820867),
+      UnitConversion::Expression.new('degree/minute').evaluate
+    )
+  end
+
+  def test_evaluate_degrees_per_minute_with_parens
+    assert_equal(
+      UnitConversion::Conversion.new(unit_name: 'rad/s', multiplication_factor: 0.00029088820867),
+      UnitConversion::Expression.new('(degree/minute)').evaluate
+    )
+  end
 end

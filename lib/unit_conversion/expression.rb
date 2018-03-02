@@ -4,6 +4,24 @@ module UnitConversion
       @expression = expression
     end
 
+    def evaluate
+      if expression == next_sub_expression # a simple expression
+        if operand_index # with an operation
+          first_unit = expression.slice(0, operand_index)
+          second_unit = expression.slice(operand_index+1..-1)
+          operator = expression.slice(operand_index)
+
+          first_unit_converted = Convert.new(first_unit).convert
+          second_unit_converted = Convert.new(second_unit).convert
+          first_unit_converted.send(operator, second_unit_converted)
+        else # without an operation
+          Convert.new(expression).convert
+        end
+      else # a complex expression
+        self.class.new(next_sub_expression).evaluate
+      end
+    end
+
     def next_sub_expression
       if inner_paren_index
         expression.slice(inner_paren_index+1..first_closing_paren_index-1)
